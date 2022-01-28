@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+<!-- Primary Meta Tags -->
+<title>MMS Exchange</title>
+<link rel="icon" href="/img/Logo.svg" type="image/icon type">
+<meta name="title" content="MMS Exchange">
+<meta name="description" content="Testing">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mms-it.com/">
+<meta property="og:title" content="MMS Exchange">
+<meta property="og:description" content="Testing">
+<meta property="og:image" content="img/Asset1.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://mms-it.com/">
+<meta property="twitter:title" content="MMS Exchange">
+<meta property="twitter:description" content="Testing">
+<meta property="twitter:image" content="img/Asset1.png">
+    <title>Exchange Calculator</title>
+    <link rel="stylesheet" href="/CSS/style.css">
+    <link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.css">
+    <link rel="stylesheet" href="/vendor/animated_it/animated.css">
+    <link rel="stylesheet" href="/CSS/night-mode.css">
+</head>
+<body>
+    <button class="mode-change animate__animated animate__slideInDown btn" onclick="changeMode()">
+        <i class="fas fa-moon" id="mode-icon"></i>
+    </button>
+    <section class="app animate__animated animate__slideInDown">
+        <div class="output">
+            <div class="brand-container">
+                <img src="img/Logo.svg" class="logo" alt="">
+                <p class="brandTitle">MMEx</p>
+            </div>
+            <div class="result-container">
+                <p class="result" id="result">0.00</p>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <form class="calc" id="calc">
+            <div class="input-container container">
+                <label for="">Input</label>
+                <input type="number" class="input" id="input" placeholder="" autofocus required min="1">
+            </div>
+            <div class="from-container container">
+                <label for="">From</label>
+                <select id="from" class="from" required onchange="test()">
+                    <option value="" selected>Select Currency</option>
+                </select>
+            </div>
+            <div class="to-container container" required>
+                <label for="">To</label>
+                <select id="to" class="to"></select>
+            </div>
+            <div class="calculate-container container">
+                <button class="calc-btn" id="calc-btn">Calculate</button>
+            </div>
+        </form>
+        <div class="history-container">
+            <table class="history">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="historyList">
+                    <!-- <div class="trash-icon" style="background-color: blue;width: 10px; padding: 0.5em; display: flex;">X</div> -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script src="/JS/data.js"></script>
+    <script src="/JS/script.js"></script>
+    
+</body>
+</html>
