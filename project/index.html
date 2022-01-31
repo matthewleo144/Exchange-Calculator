@@ -26,12 +26,16 @@
 <meta property="twitter:image" content="img/Asset1.png">
     <title>Exchange Calculator</title>
     <link rel="stylesheet" href="/CSS/style.css">
-    <link rel="stylesheet" href="/vendor/fontawesome-free-5.15.3-web/css/all.css">
+    <link rel="stylesheet" href="/vendor/fontAweSome/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="/vendor/animated_it/animated.css">
     <link rel="stylesheet" href="/CSS/night-mode.css">
 </head>
 <body>
-    <button class="mode-change animate__animated animate__slideInDown btn" onclick="changeMode()">
+    <i class="fas fa-trash-alt delete" style="color: black;" id="trashicon"></i>
+    <button class="mode-change  btn" onclick="changeMode()">
         <i class="fas fa-moon" id="mode-icon"></i>
     </button>
     <section class="app animate__animated animate__slideInDown">
@@ -52,7 +56,7 @@
             </div>
             <div class="from-container container">
                 <label for="">From</label>
-                <select id="from" class="from" required onchange="test()">
+                <select id="from" class="from" required ">
                     <option value="" selected>Select Currency</option>
                 </select>
             </div>
@@ -64,7 +68,7 @@
                 <button class="calc-btn" id="calc-btn">Calculate</button>
             </div>
         </form>
-        <div class="history-container">
+        <div class="history-container" id="history-container">
             <table class="history">
                 <thead>
                     <tr>
@@ -72,16 +76,21 @@
                         <th>From</th>
                         <th>To</th>
                         <th>Result</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="historyList">
-                    <!-- <div class="trash-icon" style="background-color: blue;width: 10px; padding: 0.5em; display: flex;">X</div> -->
                 </tbody>
             </table>
         </div>
+        <button class="clearr"">Clear All</button>
+        <!-- <div class="trash-icon" style="background-color: blue;width: 10px; padding: 0.5em; display: flex;">X</div> -->
     </section>
     <script src="/JS/data.js"></script>
     <script src="/JS/script.js"></script>
+    <!-- <script src="/JS/app.js"></script> -->
     
+
+
 </body>
 </html>
