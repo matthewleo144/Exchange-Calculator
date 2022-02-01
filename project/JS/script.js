@@ -1,171 +1,105 @@
-const input = document.querySelector("#input");
-const from = document.querySelector("#from");
-const to = document.querySelector("#to");
-const calculate = document.querySelector("#calc");
-const result = document.querySelector(".result");
-const tbody = document.querySelector("tbody");
-const clearBtn = document.querySelector(".clearBtn");
-const table = document.querySelector("table");
-const darkModebtn = document.querySelector(".switch");
-
-let toNum = (x)=>{
-    let tonum =  x.replace(",","");
-    return tonum = Number(tonum);
-}
-
-let createOption = (y,x)=>{
-    const optionTag = document.createElement("option");
-    optionTag.classList.add("optionTag");
-    optionTag.textContent = x;
-    let value = data.rates[x];
-    value = toNum(value);
-    optionTag.value = value;
-    y.append(optionTag);
-}
-
-for(x in data.rates){
-    createOption(from,x);
-    createOption(to,x);
-}
-let toRecordFrom;
-let toRecordTo;
-
-let calculateFunction = ()=>{
-    const getFromInput = input.value;
-    const getFromFrom = from.value;
-    const getFromTo = to.value;
-    const valueAfterCalculate = getFromInput * getFromFrom;
-    const valueAfterCalculate2 = valueAfterCalculate / getFromTo;
-    result.textContent = valueAfterCalculate2.toFixed(2);
-    let str1 = input.value;
-    let str2 = from.options[from.selectedIndex].text;
-    toRecordFrom = str1+" "+ str2;
-    toRecordTo = to.options[to.selectedIndex].text;
-    input.value = "";
-    input.focus();
-    from.value = "";
-    to.value = "1";
-}
+let from =  document.getElementById("from");
+let to =  document.getElementById("to");
+let input = document.getElementById("input");
+let result = document.getElementById("result");
+let historyList = document.getElementById("historyList");
+let history = document.querySelector(".history");
+let clearr = document.querySelector(".clearr");
 
 
-let date = new Date();
-const toRecordDate = date.toLocaleDateString()+" "+ date.toLocaleTimeString();//let x = toRecordDate+" "+ date.toLocaleTimeString();
-calculate.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    calculateFunction();
-    const toRecordResult = result.textContent;
-    toRecordFunction(toRecordDate,toRecordFrom,toRecordTo,toRecordResult);
-});
-let toSeriesId = ()=>{
-    let trs = document.querySelectorAll("tr");
-    for(let i=1; i<trs.length; i++){
-        trs[i].id = i;
-    }
-}
-
-let toRecordFunction =(a,b,c,d)=>{
-    if(document.querySelector("#noRecordTr")){
-        tbody.firstChild.remove();
-    }
-    const createDeleteBtn = `<i class="fas fa-trash-alt delete"</i>`;
-    const tr = document.createElement("tr");
-    let test = [a,b,c,d,createDeleteBtn]
-    for(let i=0; i<test.length; i++){
-        const td = document.createElement("td");
-        td.innerHTML = test[i];
-        tr.append(td);
-    }
-    let toclassListadd = tr.children[3];
-    toclassListadd.classList.add("recordedResult");
-    tbody.append(tr);
-    toSeriesId();
-    store();
-    deleteFunction();
-}
-let value;
-let store = ()=>{
-    let trArray = document.querySelectorAll("tr");
-    for(let i=1; i<trArray.length; i++){
-        let tdArray = trArray[i].children;
-        let key = trArray[i].id;
-        let testArray =[];
-        for(let i=0; i<tdArray.length-1; i++){
-            value = tdArray[i].textContent;
-            testArray.push(value);
-            localStorage.setItem(key,JSON.stringify(testArray));
-        }
-    }
-
-}
-
-const createNoRecord = ()=>{
-    tbody.innerHTML = `<tr id="noRecordTr">
-        <td class="noRecord" colspan="5">There is no record.....</td>
-    </tr>`;
-}
-window.addEventListener("load",()=>{
-    if(localStorage.length != 0){
-        let keys = Object.keys(localStorage).sort();
-        keys.map((e)=>{
-            let dataFromLocalStorage = JSON.parse(localStorage.getItem(e));
-            const dateFromLocalStorage = dataFromLocalStorage[0];
-            const fromFromLocalStorage = dataFromLocalStorage[1];
-            const toFromLocalStorage = dataFromLocalStorage[2];
-            const resultFromLocalStorage = dataFromLocalStorage[3];
-            toRecordFunction(dateFromLocalStorage,fromFromLocalStorage,toFromLocalStorage,resultFromLocalStorage);
-        })
-    deleteFunction();
-}else{
-    createNoRecord();
-}
-})
-
-clearBtn.addEventListener("click",()=>{
+clearr.addEventListener("click",()=>{
     localStorage.clear();
-    tbody.innerHTML = "";
-    createNoRecord();
+    historyList.innerHTML = "";
+    creatingNORecord();
     result.innerHTML = "00.0";
 })
 
-let deleteFunction =()=>{
-    let testing = document.querySelectorAll("i");
-    for(let i=0; i<testing.length; i++){
-        testing[i].addEventListener("click",(event)=>{
-            const clickedTrash = event.target;
-            clickedTrash.parentElement.parentElement.remove();
-            localStorage.removeItem(clickedTrash.parentElement.parentElement.id);
-            if(tbody.children.length === 0){
-                createNoRecord();
-            }
-            toSeriesId();
-            let keyTest = Object.keys(localStorage).sort();
-            for(let i=0; i<keyTest.length;i++){
-                const recreate = JSON.parse(localStorage.getItem(keyTest[i]));
-                const recreateDate = recreate[0];
-                const recreateFrom = recreate[1];
-                const recreateTo = recreate[2];
-                const recreateResult = recreate[3];
-                const createDeleteBtn = `<i class="fas fa-trash-alt delete"</i>`;
-                const tr = document.createElement("tr");
-                let a = [recreateDate,recreateFrom,recreateTo,recreateResult,createDeleteBtn];
-                for(let i=0; i<a.length; i++){
-                    const td = document.createElement("td");
-                    td.innerHTML = a[i];
-                    tr.append(td);
-                }
-                console.log(tr);
-            }
-            localStorage.clear();
-            store();
-        })
-        
+function createOption(x,y,z){
+    let o = document.createElement("option");
+    let t = document.createTextNode(y);
+    o.setAttribute("value",toNum(z));
+    o.appendChild(t);
+    x.appendChild(o);
+}
+    
+function toNum(x){
+    return Number(x.replace(",", ""));
+}
+
+for(x in data.rates){
+    createOption(from,x,data.rates[x]);
+    createOption(to,x,data.rates[x]);
+}
+function createTr(x){
+    let rowSpacer = document.getElementById("rowSpacer");
+    if(rowSpacer){
+        rowSpacer.remove();
     }
+    let tr = document.createElement("tr");
+    x.map(function(el){
+        let td = document.createElement("td");
+        let text = document.createTextNode(el);
+
+        td.append(text);
+        tr.append(td);
+    })
+
+    historyList.append(tr);
 }
-darkModebtn.addEventListener("change",()=>{
-    if(document.body.classList.contains("nightMode")){
-        document.body.classList.remove("nightMode");
+
+function store(){
+    localStorage.setItem("record",historyList.innerHTML);
+}
+
+document.getElementById("calc").addEventListener("submit",function(e){
+    e.preventDefault();
+        // get state
+        let x = input.value;
+        let y = from.value;
+        let z = to.value;
+        //process
+        let fromText = x+" "+from.options[from.selectedIndex].innerText;
+        let toText =to.options[to.selectedIndex].innerText;
+        let first = x*y;
+        let second = first/z;
+        let resultNum = second.toFixed(2);
+        let date = new Date();
+        const toRecordDate = date.toLocaleDateString()+" "+ date.toLocaleTimeString();//let x = toRecordDate+" "+ date.toLocaleTimeString();
+        let trashI = `X`;
+        let arr = [toRecordDate,fromText,toText,resultNum,trashI];
+        createTr(arr);
+        store();
+
+        //set state
+        result.innerHTML = resultNum;
+        input.value = "";
+        input.focus();
+
+        from.value = "";
+        to.value = "1";
+});
+
+const creatingNORecord = ()=>{
+    historyList.innerHTML = `<tr id="rowSpacer"><td colspan="5">There is no record</td></tr>`;
+}
+
+(function(){
+    if(localStorage.getItem("record")){
+        historyList.innerHTML =localStorage.getItem("record");
     }else{
-    document.body.classList.add("nightMode");
-    console.log(localStorage);
-}
+        creatingNORecord();
+    }
+})();
+
+
+function changeMode(){
+        document.body.classList.toggle("night-mode");
+        document.getElementById("mode-icon").classList.toggle("fa-sun");
+    }
+
+
+
+let lastchild = document.getElementsByClassName(".history tr td:last-child");
+lastchild.addEventListener("click",()=>{
+    console.log("last child activated!")
 })
