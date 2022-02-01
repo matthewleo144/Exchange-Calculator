@@ -114,7 +114,7 @@ input[type=number] {
 
 .btn{
     position: relative;
-    left: 70%;
+    left: 85%;
     top: 80px;
 }
 select::-ms-expand {	display: none; }
@@ -141,8 +141,8 @@ select{
 .history tr {
     background-color: var(--secondary-soft);
 } 
-.history tr:hover {background-color: #ddd;}
-  
+/* .history tr:hover {background-color: #ddd;} */
+.history td:hover {background-color: #ddd;}
 .history th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -189,8 +189,9 @@ select{
     }
     .btn{
         position: fixed;
-        left: 303px;
-        top: 20px;
+        left: 85%;
+        top: 1rem;
+        z-index: 1;
     }
 }
 
@@ -211,3 +212,13 @@ select{
     cursor: pointer;
     font-size: 20px;
     }
+.history tr td{
+    text-align: center;
+    cursor: pointer;
+}
+.history tr td:last-child{
+    text-align: center;
+    cursor: pointer;
+    background-color: red;
+    color: seashell;
+}
