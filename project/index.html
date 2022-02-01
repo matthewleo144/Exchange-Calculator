@@ -1,98 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+let from =  document.getElementById("from");
+let to =  document.getElementById("to");
+let input = document.getElementById("input");
+let result = document.getElementById("result");
+let historyList = document.getElementById("historyList");
+let history = document.querySelector(".history");
+let clearr = document.querySelector(".clearr");
+
+
+clearr.addEventListener("click",()=>{
+    localStorage.clear();
+    historyList.innerHTML = "";
+    creatingNORecord();
+})
+
+function createOption(x,y,z){
+    let o = document.createElement("option");
+    let t = document.createTextNode(y);
+    o.setAttribute("value",toNum(z));
+    o.appendChild(t);
+    x.appendChild(o);
+}
     
+function toNum(x){
+    return Number(x.replace(",", ""));
+}
 
-<!-- Primary Meta Tags -->
-<title>MMS Exchange</title>
-<link rel="icon" href="/img/Logo.svg" type="image/icon type">
-<meta name="title" content="MMS Exchange">
-<meta name="description" content="Testing">
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://mms-it.com/">
-<meta property="og:title" content="MMS Exchange">
-<meta property="og:description" content="Testing">
-<meta property="og:image" content="img/Asset1.png">
-
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://mms-it.com/">
-<meta property="twitter:title" content="MMS Exchange">
-<meta property="twitter:description" content="Testing">
-<meta property="twitter:image" content="img/Asset1.png">
-    <title>Exchange Calculator</title>
-    <link rel="stylesheet" href="/CSS/style.css">
-    <link rel="stylesheet" href="./vendor/fontAweSome/css/all.min.css">
-    <link rel="stylesheet" href="/vendor/fontAweSome/css/all.css">
-
-    <link rel="stylesheet" href="/vendor/animated_it/animated.css">
-    <link rel="stylesheet" href="/CSS/night-mode.css">
-</head>
-<body>
-    <button class="mode-change  btn" onclick="changeMode()">
-        <i class="fas fa-moon" id="mode-icon"></i>
-    </button>
-    <section class="app animate__animated animate__slideInDown">
-        <div class="output">
-            <div class="brand-container">
-                <img src="img/Logo.svg" class="logo" alt="">
-                <p class="brandTitle">MMEx</p>
-            </div>
-            <div class="result-container">
-                <p class="result" id="result">0.00</p>
-            </div>
-        </div>
-        <div class="divider"></div>
-        <form class="calc" id="calc">
-            <div class="input-container container">
-                <label for="">Input</label>
-                <input type="number" class="input" id="input" placeholder="" autofocus required min="1">
-            </div>
-            <div class="from-container container">
-                <label for="">From</label>
-                <select id="from" class="from" required>
-                    <option value="" selected>Select Currency</option>
-                </select>
-            </div>
-            <div class="to-container container" required>
-                <label for="">To</label>
-                <select id="to" class="to"></select>
-            </div>
-            <div class="calculate-container container">
-                <button class="calc-btn" id="calc-btn">Calculate</button>
-            </div>
-        </form>
-        <div class="history-container" id="history-container">
-            <table class="history">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Result</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="historyList">
-                </tbody>
-            </table>
-        </div>
-        <button class="clearr">Clear All</button>
-        <!-- <div class="trash-icon" style="background-color: blue;width: 10px; padding: 0.5em; display: flex;">X</div> -->
-    </section>
-    <script src="/JS/data.js"></script>
-    <script src="/JS/script.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-    <script>
-        $( "tbody" ).delegate( ".history tr td:last-child", "click", function() {
-            $( this ).after( console.log("aa") );
-            });
-    </script> -->
+for(x in data.rates){
+    createOption(from,x,data.rates[x]);
+    createOption(to,x,data.rates[x]);
+}
 
 
-</body>
-</html>
+let trashI = document.createElement("div");
+let trashIcon = document.createElement("i");
+    trashIcon.classList.add("fas", "fa-trash");
+    trashI.addEventListener("click", (event) => {
+        tr.remove();
+        localStorage.clear();
+        historyList.innerHTML = "";
+        creatingNORecord();
+    });
+    trashI.append(trashIcon);
+
+function createTr(x){
+    let rowSpacer = document.getElementById("rowSpacer");
+    if(rowSpacer){
+        rowSpacer.remove();
+    }
+    let tr = document.createElement("tr");
+    x.map(function(el){
+        let td = document.createElement("td");
+        let text = document.createTextNode(el);
+        td.append(text);
+        tr.append(td);
+    })
+
+    historyList.append(tr);
+}
+
+
+document.getElementById("calc").addEventListener("submit",function(e){
+    e.preventDefault();
+        // get state
+        let x = input.value;
+        let y = from.value;
+        let z = to.value;
+        //process
+        let fromText = x+" "+from.options[from.selectedIndex].innerText;
+        let toText =to.options[to.selectedIndex].innerText;
+        let first = x*y;
+        let second = first/z;
+        let resultNum = second.toFixed(2);
+        let date = new Date();
+        const toRecordDate = date.toLocaleDateString()+" "+ date.toLocaleTimeString();//let x = toRecordDate+" "+ date.toLocaleTimeString();
+        // let arr = [toRecordDate,fromText,toText,resultNum];
+        toRecordFunction(toRecordDate,fromText,toText,resultNum);
+        // createTr(arr);
+        store();
+
+        //set state
+        result.innerHTML = resultNum;
+        input.value = "";
+        input.focus();
+        from.value = "";
+        to.value = "1";
+});
+
+let toRecordFunction =(a,b,c,d)=>{
+    if(document.querySelector("#noRecordTr")){
+        tbody.firstChild.remove();
+    }
+    let trashI = document.createElement("div");
+    let trashIcon = document.createElement("i");
+    trashIcon.classList.add("fas", "fa-trash");
+    trashI.addEventListener("click", (event) => {
+        tr.remove();
+        localStorage.clear();
+        historyList.innerHTML = "";
+        creatingNORecord();
+    });
+    trashI.append(trashIcon);
+    const tr = document.createElement("tr");
+    let arr = [a,b,c,d,trashI]
+    createTr(arr);
+    // for(let i=0; i<test.length; i++){
+    //     const td = document.createElement("td");
+    //     td.innerHTML = test[i];
+    //     tr.append(td);
+}
+
+const creatingNORecord = ()=>{
+    historyList.innerHTML = `<tr id="rowSpacer"><td colspan="5">There is no record</td></tr>`;
+}
+function store(){
+    localStorage.setItem("record",historyList.innerHTML);
+}
+(function(){
+    if(localStorage.getItem("record")){
+        historyList.innerHTML =localStorage.getItem("record");
+    }else{
+        creatingNORecord();
+    }
+})();
+
+
+function changeMode(){
+        document.body.classList.toggle("night-mode");
+        document.getElementById("mode-icon").classList.toggle("fa-sun");
+    }
+
+
+
+let lastchild = document.getElementsByClassName(".history tr td:last-child");
+lastchild.addEventListener("click",()=>{
+    console.log("last child activated!")
+})
