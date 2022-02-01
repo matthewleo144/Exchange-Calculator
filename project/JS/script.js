@@ -11,7 +11,7 @@ clearr.addEventListener("click",()=>{
     localStorage.clear();
     historyList.innerHTML = "";
     creatingNORecord();
-    result.innerHTML = "00.0";
+    result.innerHTML = "00.0"
 })
 
 function createOption(x,y,z){
@@ -30,6 +30,19 @@ for(x in data.rates){
     createOption(from,x,data.rates[x]);
     createOption(to,x,data.rates[x]);
 }
+
+
+let trashI = document.createElement("div");
+let trashIcon = document.createElement("i");
+    trashIcon.classList.add("fas", "fa-trash");
+    trashI.addEventListener("click", (event) => {
+        tr.remove();
+        localStorage.clear();
+        historyList.innerHTML = "";
+        creatingNORecord();
+    });
+    trashI.append(trashIcon);
+
 function createTr(x){
     let rowSpacer = document.getElementById("rowSpacer");
     if(rowSpacer){
@@ -39,7 +52,6 @@ function createTr(x){
     x.map(function(el){
         let td = document.createElement("td");
         let text = document.createTextNode(el);
-
         td.append(text);
         tr.append(td);
     })
@@ -47,9 +59,6 @@ function createTr(x){
     historyList.append(tr);
 }
 
-function store(){
-    localStorage.setItem("record",historyList.innerHTML);
-}
 
 document.getElementById("calc").addEventListener("submit",function(e){
     e.preventDefault();
@@ -65,24 +74,50 @@ document.getElementById("calc").addEventListener("submit",function(e){
         let resultNum = second.toFixed(2);
         let date = new Date();
         const toRecordDate = date.toLocaleDateString()+" "+ date.toLocaleTimeString();//let x = toRecordDate+" "+ date.toLocaleTimeString();
-        let trashI = `X`;
-        let arr = [toRecordDate,fromText,toText,resultNum,trashI];
-        createTr(arr);
+        // let arr = [toRecordDate,fromText,toText,resultNum];
+        toRecordFunction(toRecordDate,fromText,toText,resultNum);
+        // createTr(arr);
         store();
 
         //set state
         result.innerHTML = resultNum;
         input.value = "";
         input.focus();
-
         from.value = "";
         to.value = "1";
 });
 
+let toRecordFunction =(a,b,c,d)=>{
+    if(document.querySelector("#noRecordTr")){
+        tbody.firstChild.remove();
+    }
+    let trashI = document.createElement("div");
+    let trashIcon = document.createElement("i");
+    trashIcon.classList.add("fas", "fa-trash");
+    trashI.addEventListener("click", (event) => {
+        tr.remove();
+        localStorage.clear();
+        historyList.innerHTML = "";
+        creatingNORecord();
+    });
+    trashI.append(trashIcon);
+    const tr = document.createElement("tr");
+    let arr = [a,b,c,d,trashI]
+    localStorage.setItem("record",JSON.stringify(arr));
+    createTr(arr);
+    // for(let i=0; i<test.length; i++){
+    //     const td = document.createElement("td");
+    //     td.innerHTML = test[i];
+    //     tr.append(td);
+}
+
 const creatingNORecord = ()=>{
     historyList.innerHTML = `<tr id="rowSpacer"><td colspan="5">There is no record</td></tr>`;
 }
-
+function store(){
+    localStorage.setItem("record",historyList.innerHTML);
+    // localStorage.setItem("record",JSON.stringify(arr));
+}
 (function(){
     if(localStorage.getItem("record")){
         historyList.innerHTML =localStorage.getItem("record");
